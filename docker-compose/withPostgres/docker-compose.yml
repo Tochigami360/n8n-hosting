@@ -33,28 +33,12 @@ services:
       - DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
       - DB_POSTGRESDB_USER=${POSTGRES_NON_ROOT_USER}
       - DB_POSTGRESDB_PASSWORD=${POSTGRES_NON_ROOT_PASSWORD}
-        # n8n WebSocket Configuration
-      - N8N_HOST: 0.0.0.0
-      - N8N_PORT: 5678
-      - N8N_PROTOCOL: https
-      - WEBHOOK_URL: https://ai.hitogami.com
-      
-      # Fix deprecation warnings from logs
-      - N8N_RUNNERS_ENABLED: true
-      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: true
-      
-      # Security for HTTPS
-      - N8N_SECURE_COOKIE: true
     ports:
       - 5678:5678
     links:
       - postgres
     volumes:
       - n8n_storage:/home/node/.n8n
-    labels:
-      - traefik.http.middlewares.n8n-websocket.headers.customRequestHeaders.Connection=upgrade
-      - traefik.http.middlewares.n8n-websocket.headers.customRequestHeaders.Upgrade=websocket
-      - traefik.http.middlewares.n8n-websocket.headers.customRequestHeaders.Sec-WebSocket-Extensions=permessage-deflate
     depends_on:
       postgres:
         condition: service_healthy
