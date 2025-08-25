@@ -27,36 +27,12 @@ services:
     image: docker.n8n.io/n8nio/n8n
     restart: always
     environment:
-      # Database Configuration
       - DB_TYPE=postgresdb
       - DB_POSTGRESDB_HOST=postgres
       - DB_POSTGRESDB_PORT=5432
       - DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
       - DB_POSTGRESDB_USER=${POSTGRES_NON_ROOT_USER}
       - DB_POSTGRESDB_PASSWORD=${POSTGRES_NON_ROOT_PASSWORD}
-      
-      # CRITICAL: n8n Configuration for HTTPS and WebSockets
-      - N8N_HOST=0.0.0.0
-      - N8N_PORT=5678
-      - N8N_PROTOCOL=https
-      - N8N_EDITOR_BASE_URL=https://ai.hitogami.com
-      - WEBHOOK_URL=https://ai.hitogami.com
-      
-      # PROXY CONFIGURATION - FIXES THE X-FORWARDED-FOR ERRORS
-      - N8N_PROXY_HOPS=1
-      - N8N_TRUST_PROXY=true
-      
-      # Task Runners (addresses deprecation warning)
-      - N8N_RUNNERS_ENABLED=true
-      
-      # File Permissions (addresses permission warning)  
-      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
-      
-      # Security for HTTPS
-      - N8N_SECURE_COOKIE=true
-      
-      # Performance and reliability
-      - GENERIC_TIMEZONE=UTC
     ports:
       - 5678:5678
     links:
